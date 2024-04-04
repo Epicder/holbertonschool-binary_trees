@@ -13,7 +13,7 @@ if (!node)
 {
 return (0);
 }
-if (node->left != NULL && node->right != NULL)
+if (!node->parent)
 {
 return (1);
 }
