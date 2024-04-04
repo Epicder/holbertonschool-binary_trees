@@ -21,7 +21,7 @@ return (NULL);
 }
 node->n = value;
 node->parent = parent;
- node->left = NULL;
+node->left = NULL;
 node->right = parent->right;
 if (parent->right != NULL)
 {
