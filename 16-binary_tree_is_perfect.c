@@ -1,22 +1,43 @@
 #include "binary_trees.h"
-#include <stdlib.h>
 
 /**
- * binary_tree_depth - Measures the depth of the leftmost leaf in a binary tree
- * @tree: Pointer to the node to measure the depth
+ * binary_tree_depth - Measures the depth of a binary tree
+ * @tree: Pointer to the root node of the tree to measure the depth
  *
- * Return: The depth of the tree from the given node to the leftmost leaf
+ * Return: The depth of the tree
  */
 size_t binary_tree_depth(const binary_tree_t *tree)
 {
-	size_t depth = 0;
+	if (!tree)
+		return (0);
 
-	while (tree && tree->left)
-	{
-		depth++;
-		tree = tree->left;
-	}
-	return (depth);
+	size_t left_depth = binary_tree_depth(tree->left);
+	size_t right_depth = binary_tree_depth(tree->right);
+
+	return (left_depth > right_depth ? left_depth + 1 : right_depth + 1);
+}
+
+/**
+ * is_perfect_recursive - Recursively checks if a binary tree is perfect
+ * @tree: Pointer to the root node of the tree to check
+ * @depth: The depth of the tree
+ * @level: Current level in the tree
+ *
+ * Return: 1 if the tree is perfect, 0 otherwise
+ */
+int is_perfect_recursive(const binary_tree_t *tree, size_t depth, size_t level)
+{
+	if (!tree)
+		return (1);
+
+	if (!tree->left && !tree->right)
+		return (depth == level + 1);
+
+	if (!tree->left || !tree->right)
+		return (0);
+
+	return is_perfect_recursive(tree->left, depth, level + 1) &&
+           is_perfect_recursive(tree->right, depth, level + 1);
 }
 
 /**
@@ -27,22 +48,6 @@ size_t binary_tree_depth(const binary_tree_t *tree)
  */
 int binary_tree_is_perfect(const binary_tree_t *tree)
 {
-	size_t depth, depth_left, depth_right;
-
-	if (tree == NULL)
-		return (0);
-
-	depth = binary_tree_depth(tree);
-	depth_left = tree->left ? binary_tree_depth(tree->left) : 0;
-	depth_right = tree->right ? binary_tree_depth(tree->right) : 0;
-
-	if (depth_left == depth && depth_right == depth)
-	{
-		if (tree->left == NULL && tree->right == NULL)
-			return (1);
-		if (tree->left && tree->right)
-			return (binary_tree_is_perfect(tree->left) &&
-				binary_tree_is_perfect(tree->right));
-	}
-	return (0);
+	size_t depth = binary_tree_depth(tree);
+	return is_perfect_recursive(tree, depth, 0);
 }
