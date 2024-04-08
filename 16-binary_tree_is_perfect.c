@@ -36,8 +36,8 @@ int is_perfect_recursive(const binary_tree_t *tree, size_t depth, size_t level)
 	if (!tree->left || !tree->right)
 		return (0);
 
-	return is_perfect_recursive(tree->left, depth, level + 1) &&
-           is_perfect_recursive(tree->right, depth, level + 1);
+	return (is_perfect_recursive(tree->left, depth, level + 1) &&
+		is_perfect_recursive(tree->right, depth, level + 1));
 }
 
 /**
@@ -49,5 +49,6 @@ int is_perfect_recursive(const binary_tree_t *tree, size_t depth, size_t level)
 int binary_tree_is_perfect(const binary_tree_t *tree)
 {
 	size_t depth = binary_tree_depth(tree);
-	return is_perfect_recursive(tree, depth, 0);
+
+	return (is_perfect_recursive(tree, depth, 0));
 }
